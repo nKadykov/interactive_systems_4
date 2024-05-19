@@ -123,5 +123,8 @@ void MainWindow::timeHit() {
 }
 
 void MainWindow::showHelp() {
+    if(!m_help_dialog) {
+        m_help_dialog = new Help;
+    }
     m_help_dialog->showHelp();
 }

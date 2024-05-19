@@ -8,7 +8,7 @@
 #include <QGroupBox>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
-#include <QToolButton>
+#include <QPushButton>
 #include <QTextBrowser>
 #include <QMenu>
 #include <QAction>
@@ -43,7 +43,7 @@ private:
     QGridLayout* m_menu_layout;
     QGridLayout* m_text_layout;
     enum {NUMBER = 3};
-    QToolButton* m_buttons[NUMBER];
+    QPushButton* m_buttons[NUMBER];
     QTextBrowser* m_text_browser;
 
     QAction* m_action_content;
