@@ -39,6 +39,10 @@ private:
     QMenuBar* m_menu_bar;
 
     QTreeWidget* m_tree_widget;
+    enum {CHILDS = 4};
+    QTreeWidgetItem* m_tree_child[CHILDS];
+    QTreeWidgetItem* m_tree_child_child[CHILDS];
+
     QGridLayout* m_main_layout;
     QGridLayout* m_menu_layout;
     QGridLayout* m_text_layout;

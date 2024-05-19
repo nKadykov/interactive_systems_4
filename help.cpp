@@ -1,4 +1,6 @@
 #include "help.h"
+#include <QFile>
+#include <QDesktopServices>
 
 Help::Help(QWidget* parent) : QDialog(parent) {
     m_tool_bar = new QToolBar;
@@ -49,11 +51,35 @@ Help::Help(QWidget* parent) : QDialog(parent) {
     connect(m_action_find, &QAction::triggered, this, &Help::actionShowFind);
 
     m_menu_layout->addWidget(m_menu_bar);
+
+    m_tree_widget = new QTreeWidget;
+    QTreeWidgetItem* tree_item_1 = new QTreeWidgetItem;
+    tree_item_1->setText(0, "Лабораторные работы");
+    for(int i = 0; i < 4; ++i) {
+        m_tree_child[i] = new QTreeWidgetItem();
+        m_tree_child[i]->setText(0, QString::number(i+1));
+        tree_item_1->addChild(m_tree_child[i]);
+        m_tree_child_child[i] = new QTreeWidgetItem;
+        m_tree_child_child[i]->setText(0, "Цели");
+        m_tree_child[i]->addChild(m_tree_child_child[i]);
+    }
+    m_tree_widget->addTopLevelItem(tree_item_1);
+
+    m_menu_layout->addWidget(m_tree_widget);
     m_menu_box->setLayout(m_menu_layout);
 
     m_text_box = new QGroupBox;
-    m_text_browser = new QTextBrowser;
-    m_text_browser->setMaximumSize(300, 300);
+    m_text_browser = new QTextBrowser(this);
+    m_text_browser->setMinimumSize(500, 500);
+    m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/begin_page.html"));
+
+    QFile file("e:/Qt Projects/interactive_systems_4/html/begin_page.html");
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qWarning("file not found");
+    }
+    m_text_browser->setHtml(file.readAll());
+
     m_text_layout = new QGridLayout;
     m_text_layout->addWidget(m_text_browser);
     m_text_box->setLayout(m_text_layout);
@@ -82,7 +108,8 @@ void Help::buttonBack() {
 }
 
 void Help::buttonNetwork() {
-    this->hide();
+    QString link = "file:E:/Qt Projects/interactive_systems_4/html/begin_page.html";
+    QDesktopServices::openUrl(QUrl(link));
 }
 
 void Help::actionShowContent() {
