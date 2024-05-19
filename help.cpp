@@ -60,7 +60,7 @@ Help::Help(QWidget* parent) : QDialog(parent) {
         m_tree_child[i]->setText(0, QString::number(i+1));
         tree_item_1->addChild(m_tree_child[i]);
         m_tree_child_child[i] = new QTreeWidgetItem;
-        m_tree_child_child[i]->setText(0, "Цели");
+        m_tree_child_child[i]->setText(0, "Цели " + QString::number(i + 1));
         m_tree_child[i]->addChild(m_tree_child_child[i]);
     }
     m_tree_widget->addTopLevelItem(tree_item_1);
@@ -72,6 +72,8 @@ Help::Help(QWidget* parent) : QDialog(parent) {
     m_text_browser = new QTextBrowser(this);
     m_text_browser->setMinimumSize(500, 500);
     m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/begin_page.html"));
+
+    connect(m_tree_widget, SIGNAL(itemClicked(m_tree_child_child[0], 0)), this, SLOT(setFirstPage()));
 
     QFile file("e:/Qt Projects/interactive_systems_4/html/begin_page.html");
     if (!file.open(QIODevice::ReadOnly))
@@ -131,4 +133,44 @@ void Help::actionShowFind() {
         delete m_menu_box;
         m_menu_box = nullptr;
     }
+}
+
+void Help::setFirstPage() {
+    m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/lab_1_purpose.html"));
+    QFile file("e:/Qt Projects/interactive_systems_4/html/lab_1_purpose.html");
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qWarning("file not found");
+    }
+    m_text_browser->setHtml(file.readAll());
+}
+
+void Help::setSecondPage() {
+    m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/lab_2_purpose.html"));
+    QFile file("e:/Qt Projects/interactive_systems_4/html/lab_2_purpose.html");
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qWarning("file not found");
+    }
+    m_text_browser->setHtml(file.readAll());
+}
+
+void Help::setThirdPage() {
+    m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/lab_3_purpose.html"));
+    QFile file("e:/Qt Projects/interactive_systems_4/html/lab_3_purpose.html");
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qWarning("file not found");
+    }
+    m_text_browser->setHtml(file.readAll());
+}
+
+void Help::setFourthPage() {
+    m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/lab_4_purpose.html"));
+    QFile file("e:/Qt Projects/interactive_systems_4/html/lab_4_purpose.html");
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qWarning("file not found");
+    }
+    m_text_browser->setHtml(file.readAll());
 }

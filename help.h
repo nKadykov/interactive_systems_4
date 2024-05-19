@@ -20,6 +20,7 @@ public:
     Help(QWidget* parent = nullptr);
     ~Help();
     void showHelp();
+
 private slots:
     void buttonHide();
     void buttonBack();
@@ -28,6 +29,11 @@ private slots:
     void actionShowContent();
     void actionShowPointer();
     void actionShowFind();
+
+    void setFirstPage();
+    void setSecondPage();
+    void setThirdPage();
+    void setFourthPage();
 private:
     QToolBar* m_tool_bar;
     QGroupBox* m_menu_box;
@@ -39,9 +45,6 @@ private:
     QMenuBar* m_menu_bar;
 
     QTreeWidget* m_tree_widget;
-    enum {CHILDS = 4};
-    QTreeWidgetItem* m_tree_child[CHILDS];
-    QTreeWidgetItem* m_tree_child_child[CHILDS];
 
     QGridLayout* m_main_layout;
     QGridLayout* m_menu_layout;
@@ -53,6 +56,9 @@ private:
     QAction* m_action_content;
     QAction* m_action_pointer;
     QAction* m_action_find;
+    enum {CHILDS = 4};
+    QTreeWidgetItem* m_tree_child[CHILDS];
+    QTreeWidgetItem* m_tree_child_child[CHILDS];
 };
 
 #endif // HELP_H
