@@ -29,10 +29,22 @@
      <rect>
       <x>10</x>
       <y>130</y>
-      <width>241</width>
-      <height>341</height>
+      <width>781</width>
+      <height>471</height>
      </rect>
     </property>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>350</number>
+    </attribute>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>100</number>
+    </attribute>
+    <attribute name="verticalHeaderMinimumSectionSize">
+     <number>40</number>
+    </attribute>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>30</number>
+    </attribute>
     <row/>
     <row/>
     <row/>
