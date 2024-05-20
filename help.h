@@ -30,10 +30,7 @@ private slots:
     void actionShowPointer();
     void actionShowFind();
 
-    void setFirstPage();
-    void setSecondPage();
-    void setThirdPage();
-    void setFourthPage();
+    void setPage(QTreeWidgetItem*, int);
 private:
     QToolBar* m_tool_bar;
     QGroupBox* m_menu_box;

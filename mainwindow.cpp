@@ -47,21 +47,23 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::pushMenu() {
-    if(m_index > 20) {
-        m_index = 1;
+    if(m_is_printed) {
+        if(m_index > 20) {
+            m_index = 1;
+        }
+        QTableWidgetItem* item1 = new QTableWidgetItem;
+        int e = m_elapsed->elapsed();
+        item1->setText(QString::number(e / 1000) + "." + QString::number(e % 1000));
+        m_ui->table_widget->setItem(m_index, 0, item1);
+        QTableWidgetItem* item2 = new QTableWidgetItem;
+        int hick = qLn(19) / qLn(2);
+        item2->setText(QString::number(hick));
+        m_ui->table_widget->setItem(m_index, 1, item2);
+        m_is_printed = false;
+        m_ui->line_edit->clear();
+        m_elapsed->restart();
+        m_index++;
     }
-    QTableWidgetItem* item1 = new QTableWidgetItem;
-    int e = m_elapsed->elapsed();
-    item1->setText(QString::number(e / 1000) + "." + QString::number(e % 1000));
-    m_ui->table_widget->setItem(m_index, 0, item1);
-    QTableWidgetItem* item2 = new QTableWidgetItem;
-    int hick = qLn(19) / qLn(2);
-    item2->setText(QString::number(hick));
-    m_ui->table_widget->setItem(m_index, 1, item2);
-    m_is_printed = false;
-    m_ui->line_edit->clear();
-    m_elapsed->restart();
-    m_index++;
 }
 
 void MainWindow::timeHit() {
@@ -73,50 +75,57 @@ void MainWindow::timeHit() {
         case 0:
             m_ui->line_edit->setText(tr("Open"));
             m_is_printed = true;
+            m_elapsed->restart();
             break;
         case 2:
             m_ui->line_edit->setText(tr("Save"));
             m_is_printed = true;
+            m_elapsed->restart();
             break;
         case 3:
             m_ui->line_edit->setText(tr("New"));
             m_is_printed = true;
+            m_elapsed->restart();
             break;
         case 4:
             m_ui->line_edit->setText(tr("Print"));
             m_is_printed = true;
+            m_elapsed->restart();
             break;
         case 5:
             m_ui->line_edit->setText(tr("Network"));
             m_is_printed = true;
+            m_elapsed->restart();
             break;
         case 6:
             m_ui->line_edit->setText(tr("Exit"));
             m_is_printed = true;
+            m_elapsed->restart();
             break;
         case 7:
             m_ui->line_edit->setText(tr("Copy"));
             m_is_printed = true;
+            m_elapsed->restart();
             break;
         case 8:
             m_ui->line_edit->setText(tr("Insert"));
             m_is_printed = true;
+            m_elapsed->restart();
             break;
         case 9:
             m_ui->line_edit->setText(tr("Delete"));
             m_is_printed = true;
+            m_elapsed->restart();
             break;
         case 10:
             m_ui->line_edit->setText(tr("New document"));
             m_is_printed = true;
+            m_elapsed->restart();
             break;
         case 11:
             m_ui->line_edit->setText(tr("Save window"));
             m_is_printed = true;
-            break;
-        case 12:
-            m_ui->line_edit->setText(tr("Help"));
-            m_is_printed = true;
+            m_elapsed->restart();
             break;
         }
     }

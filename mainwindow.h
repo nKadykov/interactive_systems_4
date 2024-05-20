@@ -39,7 +39,6 @@ private:
         NEW_WINDOW,
         WRAP,
         SAVE_WINDOW,
-        HELP
     };
     bool m_is_printed = false;
     QTimer* m_timer;
