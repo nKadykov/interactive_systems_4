@@ -56,6 +56,7 @@ private:
     enum {CHILDS = 4};
     QTreeWidgetItem* m_tree_child[CHILDS];
     QTreeWidgetItem* m_tree_child_child[CHILDS];
+    QTreeWidgetItem* m_tree_child_child_2[CHILDS];
 };
 
 #endif // HELP_H
