@@ -80,7 +80,6 @@ Help::Help(QWidget* parent) : QDialog(parent) {
     m_text_box = new QGroupBox;
     m_text_browser = new QTextBrowser(this);
     m_text_browser->setMinimumSize(500, 500);
-    m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/begin_page.html"));
 
     QFile file("e:/Qt Projects/interactive_systems_4/html/begin_page.html");
     if (!file.open(QIODevice::ReadOnly))
@@ -89,8 +88,7 @@ Help::Help(QWidget* parent) : QDialog(parent) {
     }
     m_text_browser->setHtml(file.readAll());
 
-    connect(m_tree_widget, SIGNAL(itemClicked(QTreeWidgetItem*, int)),
-                     this, SLOT(setPage(QTreeWidgetItem*, int)));
+    connect(m_tree_widget, &QTreeWidget::itemClicked, this, &Help::setPage);
 
     m_text_layout = new QGridLayout;
     m_text_layout->addWidget(m_text_browser);
@@ -164,8 +162,7 @@ void Help::actionShowContent() {
         }
         m_tree_widget->addTopLevelItem(tree_item_1);
         m_menu_layout->addWidget(m_tree_widget);
-        connect(m_tree_widget, SIGNAL(itemClicked(QTreeWidgetItem*, int)),
-                this, SLOT(setPage(QTreeWidgetItem*, int)));
+        connect(m_tree_widget, &QTreeWidget::itemClicked, this, &Help::setPage);
     }
 }
 
@@ -204,8 +201,7 @@ void Help::actionShowPointer() {
             m_tree_pointer->addTopLevelItem(m_tree_child_pointer[i]);
         }
         m_menu_layout->addWidget(m_tree_pointer);
-        connect(m_tree_pointer, SIGNAL(itemClicked(QTreeWidgetItem*, int)),
-                this, SLOT(setPage(QTreeWidgetItem*, int)));
+        connect(m_tree_pointer, &QTreeWidget::itemClicked, this, &Help::setPage);
     }
 }
 
@@ -242,7 +238,6 @@ void Help::actionShowFind() {
 
 void Help::setPage(QTreeWidgetItem* item, int i) {
     if(item->text(0).contains("Цель 1")) {
-        m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/lab_1_purpose.html"));
         QFile file("e:/Qt Projects/interactive_systems_4/html/lab_1_purpose.html");
         if (!file.open(QIODevice::ReadOnly))
         {
@@ -251,7 +246,6 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
         m_text_browser->setHtml(file.readAll());
     }
     if(item->text(0).contains("Цель 2")) {
-        m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/lab_2_purpose.html"));
         QFile file("e:/Qt Projects/interactive_systems_4/html/lab_2_purpose.html");
         if (!file.open(QIODevice::ReadOnly))
         {
@@ -260,7 +254,6 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
         m_text_browser->setHtml(file.readAll());
     }
     if(item->text(0).contains("Цель 3")) {
-        m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/lab_3_purpose.html"));
         QFile file("e:/Qt Projects/interactive_systems_4/html/lab_3_purpose.html");
         if (!file.open(QIODevice::ReadOnly))
         {
@@ -269,7 +262,6 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
         m_text_browser->setHtml(file.readAll());
     }
     if(item->text(0).contains("Цель 4")) {
-        m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/lab_4_purpose.html"));
         QFile file("e:/Qt Projects/interactive_systems_4/html/lab_4_purpose.html");
         if (!file.open(QIODevice::ReadOnly))
         {
@@ -279,7 +271,6 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
     }
 
     if(item->text(0).contains("Задачи 1")) {
-        m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/lab_1_2.html"));
         QFile file("e:/Qt Projects/interactive_systems_4/html/lab_1_2.html");
         if (!file.open(QIODevice::ReadOnly))
         {
@@ -288,7 +279,6 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
         m_text_browser->setHtml(file.readAll());
     }
     if(item->text(0).contains("Задачи 2")) {
-        m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/lab_2_2.html"));
         QFile file("e:/Qt Projects/interactive_systems_4/html/lab_2_2.html");
         if (!file.open(QIODevice::ReadOnly))
         {
@@ -297,7 +287,6 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
         m_text_browser->setHtml(file.readAll());
     }
     if(item->text(0).contains("Задачи 3")) {
-        m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/lab_3_2.html"));
         QFile file("e:/Qt Projects/interactive_systems_4/html/lab_3_2.html");
         if (!file.open(QIODevice::ReadOnly))
         {
@@ -306,7 +295,6 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
         m_text_browser->setHtml(file.readAll());
     }
     if(item->text(0).contains("Задачи 4")) {
-        m_text_browser->setSource(QUrl("e:/Qt Projects/interactive_systems_4/html/lab_4_2.html"));
         QFile file("e:/Qt Projects/interactive_systems_4/html/lab_4_2.html");
         if (!file.open(QIODevice::ReadOnly))
         {
@@ -319,6 +307,11 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
 void Help::performSearch() {
     QString directory_path = "E:/Qt Projects/interactive_systems_4/html";
     QString search_text = m_search_edit->text();
+
+    if(search_text.isEmpty()) {
+        return;
+    }
+
     m_result_edit->clear();
 
     QDir directory(directory_path);
@@ -338,25 +331,16 @@ void Help::performSearch() {
             QString plain_text = document.toPlainText();
             QStringList lines = plain_text.split('\n');
 
-            for(int i = 0; i < lines.size(); ++i) {
-                if(lines[i].contains(search_text, Qt::CaseInsensitive)) {
-                    QString link = QString("<a href=\"%1#%2\"%3 (line %4)</a>").arg(file_path).arg(i + 1).arg(filename).arg(i + 1);
-                    m_result_edit->append(link);
-                }
-            }
-
             for (int i = 0; i < lines.size(); ++i) {
                 if(lines[i].contains(search_text, Qt::CaseInsensitive)) {
-                    QString link = QString("<a href=\"%1#%2\">%3</a>").arg(file_path).arg(i + 1).arg(search_text + "...");
+                    QString link = QString("<a href=\"%1#%2\">%3</a>").arg(file_path).arg(i + 1).arg(search_text);
                     // QString link = QString("<a href=\"%1#%2\">%3 (line %4)</a>")
                     //                    .arg(file_path)
                     //                    .arg(i + 1)
                     //                    .arg(filename)
                     //                    .arg(i + 1);
-                    // m_result_edit->append(link);
-                }
-                if (lines[i].contains(search_text, Qt::CaseInsensitive)) {
-                    m_result_edit->append(QString("Found in %1 at line %2: %3\n")
+                    m_result_edit->append(link);
+                    m_result_edit->append(QString("Found in %1 at line %2: %3")
                                               .arg(filename)
                                               .arg(i + 1)
                                               .arg(lines[i].trimmed()));
@@ -372,7 +356,6 @@ void Help::performSearch() {
 
 void Help::onLinkClicked(const QUrl &url) {
     QString file_path = url.toLocalFile();
-    m_text_browser->setText(file_path);
     int line_number = url.fragment().toInt();
 
     QFile file(file_path);
@@ -398,4 +381,5 @@ void Help::onLinkClicked(const QUrl &url) {
         m_text_browser->setWindowTitle(file_path);
         m_text_browser->setDocument(document);
     }
+    m_text_browser->setText(file_path);
 }
