@@ -142,6 +142,11 @@ void Help::actionShowContent() {
         m_result_edit = nullptr;
     }
 
+    if(m_tree_pointer != nullptr) {
+        delete m_tree_pointer;
+        m_tree_pointer = nullptr;
+    }
+
     if(m_tree_widget == nullptr) {
         m_tree_widget = new QTreeWidget;
         QTreeWidgetItem* tree_item_1 = new QTreeWidgetItem;
@@ -188,12 +193,31 @@ void Help::actionShowPointer() {
         m_result_edit = nullptr;
     }
 
+    if(m_tree_pointer == nullptr) {
+        m_tree_pointer = new QTreeWidget;
+        for(int i = 0; i < 8; ++i) {
+            m_tree_child_pointer[i] = new QTreeWidgetItem();
+            if(i % 2 == 0)
+                m_tree_child_pointer[i]->setText(0, "Цель " + QString::number(i / 2 + 1));
+            if(i % 2 != 0)
+                m_tree_child_pointer[i]->setText(0, "Задачи " + QString::number(i / 2 + 1));
+            m_tree_pointer->addTopLevelItem(m_tree_child_pointer[i]);
+        }
+        m_menu_layout->addWidget(m_tree_pointer);
+        connect(m_tree_pointer, SIGNAL(itemClicked(QTreeWidgetItem*, int)),
+                this, SLOT(setPage(QTreeWidgetItem*, int)));
+    }
 }
 
 void Help::actionShowFind() {
     if(m_tree_widget) {
         delete m_tree_widget;
         m_tree_widget = nullptr;
+    }
+
+    if(m_tree_pointer != nullptr) {
+        delete m_tree_pointer;
+        m_tree_pointer = nullptr;
     }
 
     if(m_search_label == nullptr)

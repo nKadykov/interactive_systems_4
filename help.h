@@ -67,6 +67,10 @@ private:
     QPushButton* m_search_button = nullptr;
     QLineEdit* m_search_edit = nullptr;
     QTextBrowser* m_result_edit = nullptr;
+
+    QTreeWidget* m_tree_pointer = nullptr;
+    enum{POINTERS = 8};
+    QTreeWidgetItem* m_tree_child_pointer[POINTERS];
 };
 
 #endif // HELP_H
