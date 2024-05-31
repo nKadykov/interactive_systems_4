@@ -12,6 +12,8 @@
 #include <QTextBrowser>
 #include <QMenu>
 #include <QAction>
+#include <QLabel>
+#include <QLineEdit>
 
 class Help : public QDialog
 {
@@ -31,6 +33,9 @@ private slots:
     void actionShowFind();
 
     void setPage(QTreeWidgetItem*, int);
+
+    void performSearch();
+    void onLinkClicked(const QUrl&);
 private:
     QToolBar* m_tool_bar;
     QGroupBox* m_menu_box;
@@ -57,6 +62,11 @@ private:
     QTreeWidgetItem* m_tree_child[CHILDS];
     QTreeWidgetItem* m_tree_child_child[CHILDS];
     QTreeWidgetItem* m_tree_child_child_2[CHILDS];
+
+    QLabel* m_search_label = nullptr;
+    QPushButton* m_search_button = nullptr;
+    QLineEdit* m_search_edit = nullptr;
+    QTextBrowser* m_result_edit = nullptr;
 };
 
 #endif // HELP_H
