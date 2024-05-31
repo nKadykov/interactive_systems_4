@@ -81,7 +81,7 @@ Help::Help(QWidget* parent) : QDialog(parent) {
     m_text_browser = new QTextBrowser(this);
     m_text_browser->setMinimumSize(500, 500);
 
-    QFile file("e:/Qt Projects/interactive_systems_4/html/begin_page.html");
+    QFile file("html/begin_page.html");
     if (!file.open(QIODevice::ReadOnly))
     {
         qWarning("file not found");
@@ -118,7 +118,7 @@ void Help::buttonBack() {
 }
 
 void Help::buttonNetwork() {
-    QString link = "file:E:/Qt Projects/interactive_systems_4/html/begin_page.html";
+    QString link = "html/begin_page.html";
     QDesktopServices::openUrl(QUrl(link));
 }
 
@@ -238,7 +238,7 @@ void Help::actionShowFind() {
 
 void Help::setPage(QTreeWidgetItem* item, int i) {
     if(item->text(0).contains("Цель 1")) {
-        QFile file("e:/Qt Projects/interactive_systems_4/html/lab_1_purpose.html");
+        QFile file("html/lab_1_purpose.html");
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning("file not found");
@@ -246,7 +246,7 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
         m_text_browser->setHtml(file.readAll());
     }
     if(item->text(0).contains("Цель 2")) {
-        QFile file("e:/Qt Projects/interactive_systems_4/html/lab_2_purpose.html");
+        QFile file("html/lab_2_purpose.html");
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning("file not found");
@@ -254,7 +254,7 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
         m_text_browser->setHtml(file.readAll());
     }
     if(item->text(0).contains("Цель 3")) {
-        QFile file("e:/Qt Projects/interactive_systems_4/html/lab_3_purpose.html");
+        QFile file("html/lab_3_purpose.html");
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning("file not found");
@@ -262,7 +262,7 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
         m_text_browser->setHtml(file.readAll());
     }
     if(item->text(0).contains("Цель 4")) {
-        QFile file("e:/Qt Projects/interactive_systems_4/html/lab_4_purpose.html");
+        QFile file("html/lab_4_purpose.html");
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning("file not found");
@@ -271,7 +271,7 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
     }
 
     if(item->text(0).contains("Задачи 1")) {
-        QFile file("e:/Qt Projects/interactive_systems_4/html/lab_1_2.html");
+        QFile file("html/lab_1_2.html");
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning("file not found");
@@ -279,7 +279,7 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
         m_text_browser->setHtml(file.readAll());
     }
     if(item->text(0).contains("Задачи 2")) {
-        QFile file("e:/Qt Projects/interactive_systems_4/html/lab_2_2.html");
+        QFile file("html/lab_2_2.html");
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning("file not found");
@@ -287,7 +287,7 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
         m_text_browser->setHtml(file.readAll());
     }
     if(item->text(0).contains("Задачи 3")) {
-        QFile file("e:/Qt Projects/interactive_systems_4/html/lab_3_2.html");
+        QFile file("html/lab_3_2.html");
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning("file not found");
@@ -295,7 +295,7 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
         m_text_browser->setHtml(file.readAll());
     }
     if(item->text(0).contains("Задачи 4")) {
-        QFile file("e:/Qt Projects/interactive_systems_4/html/lab_4_2.html");
+        QFile file("html/lab_4_2.html");
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning("file not found");
@@ -305,7 +305,7 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
 }
 
 void Help::performSearch() {
-    QString directory_path = "E:/Qt Projects/interactive_systems_4/html";
+    QString directory_path = "html";
     QString search_text = m_search_edit->text();
 
     if(search_text.isEmpty()) {
