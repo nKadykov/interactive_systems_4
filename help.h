@@ -14,6 +14,7 @@
 #include <QAction>
 #include <QLabel>
 #include <QLineEdit>
+#include <QListWidget>
 
 class Help : public QDialog
 {
@@ -35,7 +36,7 @@ private slots:
     void setPage(QTreeWidgetItem*, int);
 
     void performSearch();
-    void onLinkClicked(const QUrl&);
+    void onLinkClicked(QListWidgetItem*);
 private:
     QToolBar* m_tool_bar;
     QGroupBox* m_menu_box;
@@ -66,11 +67,13 @@ private:
     QLabel* m_search_label = nullptr;
     QPushButton* m_search_button = nullptr;
     QLineEdit* m_search_edit = nullptr;
-    QTextBrowser* m_result_edit = nullptr;
+    QListWidget* m_file_list = nullptr;
 
     QTreeWidget* m_tree_pointer = nullptr;
     enum{POINTERS = 8};
     QTreeWidgetItem* m_tree_child_pointer[POINTERS];
+
+    QString m_search_text = "";
 };
 
 #endif // HELP_H
