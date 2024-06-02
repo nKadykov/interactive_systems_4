@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>804</width>
+    <height>605</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,6 +25,9 @@
     </property>
    </widget>
    <widget class="QTableWidget" name="table_widget">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -37,13 +40,13 @@
      <number>350</number>
     </attribute>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>100</number>
+     <number>375</number>
     </attribute>
     <attribute name="verticalHeaderMinimumSectionSize">
      <number>40</number>
     </attribute>
     <attribute name="verticalHeaderDefaultSectionSize">
-     <number>30</number>
+     <number>40</number>
     </attribute>
     <row/>
     <row/>
@@ -72,7 +75,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>804</width>
      <height>22</height>
     </rect>
    </property>

@@ -374,8 +374,6 @@ void Help::performSearch() {
 }
 
 void Help::onLinkClicked(QListWidgetItem* item) {
-    // m_text_browser->clear();
-
     QString file_path = item->data(Qt::UserRole).toString();
     QString search_text = m_search_text;
 
@@ -388,6 +386,7 @@ void Help::onLinkClicked(QListWidgetItem* item) {
     QTextStream in(&file);
     QString content = in.readAll();
 
+    m_text_browser->toPlainText();
     m_text_browser->setHtml(content);
     m_text_browser->append(search_text);
 
