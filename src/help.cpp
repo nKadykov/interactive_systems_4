@@ -31,34 +31,6 @@ Help::Help(QWidget* parent) : QDialog(parent) {
     m_menu_box = new QGroupBox;
     m_menu_layout = new QGridLayout;
 
-    // m_menu_bar = new QMenuBar;
-
-    // m_menu_content = new QMenu("&Content", m_menu_bar);
-    // m_menu_content->setMinimumSize(5, 5);
-
-    // m_menu_pointer = new QMenu("&Template");
-    // m_menu_pointer->setMinimumSize(5, 5);
-
-    // m_menu_find = new QMenu("&Character");
-    // m_menu_find->setMinimumSize(5, 5);
-
-    // m_action_content = new QAction(tr("Content"));
-    // m_action_template = new QAction(tr("Template"));
-    // m_action_character = new QAction(tr("Character"));
-
-    // m_menu_content->addAction(m_action_content);
-    // m_menu_pointer->addAction(m_action_template);
-    // m_menu_find->addAction(m_action_character);
-
-    // m_menu_bar->addMenu(m_menu_content);
-    // m_menu_bar->addMenu(m_menu_pointer);
-    // m_menu_bar->addMenu(m_menu_find);
-
-    // connect(m_action_template, &QAction::triggered, this, &Help::actionShowTemplate);
-    // connect(m_action_character, &QAction::triggered, this, &Help::actionShowCharacter);
-
-    // m_menu_layout->addWidget(m_menu_bar);
-
     m_tab_widget = new QTabWidget;
 
     m_tab_1 = new QWidget;
@@ -72,6 +44,13 @@ Help::Help(QWidget* parent) : QDialog(parent) {
     m_tab_widget->addTab(m_tab_1, "Content");
     m_tab_widget->addTab(m_tab_2, "Template");
     m_tab_widget->addTab(m_tab_3, "Character");
+    connect(m_tab_widget, &QTabWidget::currentChanged, this, [=](int index) {
+        if(index == 1) {
+            m_template_edit->setFocus();
+        } else if (index == 2) {
+            m_character_edit->setFocus();
+        }
+    });
 
     m_menu_layout->addWidget(m_tab_widget);
     m_menu_box->setLayout(m_menu_layout);
@@ -111,7 +90,7 @@ Help::Help(QWidget* parent) : QDialog(parent) {
     m_tab_3_layout->addWidget(m_words_list);
     m_menu_box->setLayout(m_tab_3_layout);
 
-    QFile file("html/begin_page.html");
+    QFile file("html/lab_1_2.html");
     if (!file.open(QIODevice::ReadOnly))
     {
         qWarning("file not found");
@@ -300,6 +279,15 @@ void Help::characterSearch() {
 void Help::keyPressEvent(QKeyEvent *event) {
     if(event->key()) {
         event->ignore();
+    }
+    if(event->key() == Qt::Key_Left) {
+        int current_index = m_tab_widget->currentIndex();
+        int new_index = (current_index == 0) ? m_tab_widget->count() - 1 : current_index - 1;
+        m_tab_widget->setCurrentIndex(new_index);
+    } else if (event->key() == Qt::Key_Right) {
+        int current_index = m_tab_widget->currentIndex();
+        int new_index = (current_index == m_tab_widget->count() - 1) ? 0 : current_index + 1;
+        m_tab_widget->setCurrentIndex(new_index);
     }
 }
 
