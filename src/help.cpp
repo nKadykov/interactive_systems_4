@@ -266,17 +266,33 @@ void Help::characterSearch() {
 
 
     QSet<QString> unique_words;
+    cursor.movePosition(QTextCursor::Start);
 
     while(!cursor.isNull() && !cursor.atEnd()) {
         // cursor = doc->find(regex, cursor);
-        cursor = doc->find(text, cursor, QTextDocument::FindWholeWords | QTextDocument::FindCaseSensitively);
-        if(!cursor.isNull()) {
-            QString word = cursor.selectedText();
-            if(word.startsWith(text, Qt::CaseInsensitive) && !unique_words.contains(word)) {
-                unique_words.insert(word);
-                QListWidgetItem *item = new QListWidgetItem(word);
-                m_words_list->addItem(item);
-            }
+        // cursor = doc->find(text, cursor, QTextDocument::FindCaseSensitively);
+        // if(!cursor.isNull()) {
+        //     QString word = cursor.selectedText();
+        //     if(word.startsWith(text, Qt::CaseInsensitive)) {
+        //         cursor.select(QTextCursor::WordUnderCursor);
+        //         word = cursor.selectedText();
+        //         if (!unique_words.contains(word)) {
+        //             unique_words.insert(word);
+        //             QListWidgetItem *item = new QListWidgetItem(word);
+        //             m_words_list->addItem(item);
+        //         }
+        //     }
+        //     cursor.movePosition(QTextCursor::NextWord);
+        // }
+        cursor.movePosition(QTextCursor::NextWord);
+        cursor.select(QTextCursor::WordUnderCursor);
+
+        QString word = cursor.selectedText();
+        // Проверка, что слово начинается с введенного текста
+        if (word.startsWith(text, Qt::CaseSensitive) && !unique_words.contains(word)) {
+            unique_words.insert(word);
+            QListWidgetItem *item = new QListWidgetItem(word);
+            m_words_list->addItem(item);
         }
     }
 }
@@ -306,13 +322,11 @@ void Help::highlightWords(QListWidgetItem* item) {
     }
 
     cursor = QTextCursor(doc);
-    // QRegularExpression regex("\\b" + word + "\\b");
 
     QTextCharFormat format;
     format.setBackground(Qt::yellow);
 
     while(!cursor.isNull() && !cursor.atEnd()) {
-        // cursor = doc->find(regex, cursor);
         cursor = doc->find(word, cursor, QTextDocument::FindWholeWords | QTextDocument::FindCaseSensitively);
         if(!cursor.isNull()) {
             cursor.mergeCharFormat(format);
