@@ -15,6 +15,11 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
+#include <QEvent>
+#include <QKeyEvent>
+#include <QTabWidget>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 
 class Help : public QDialog
 {
@@ -29,23 +34,20 @@ private slots:
     void buttonBack();
     void buttonNetwork();
 
-    void actionShowContent();
-    void actionShowPointer();
-    void actionShowFind();
-
     void setPage(QTreeWidgetItem*, int);
 
-    void performSearch();
-    void onLinkClicked(QListWidgetItem*);
+    // void performSearch();
+    // void onLinkClicked(QListWidgetItem*);
+
+    void templateSearch();
+    void characterSearch();
+    void highlightWords(QListWidgetItem* item);
+
+    void keyPressEvent(QKeyEvent *event) override;
 private:
     QToolBar* m_tool_bar;
     QGroupBox* m_menu_box;
     QGroupBox* m_text_box;
-
-    QMenu* m_menu_content;
-    QMenu* m_menu_pointer;
-    QMenu* m_menu_find;
-    QMenuBar* m_menu_bar;
 
     QTreeWidget* m_tree_widget;
 
@@ -54,24 +56,35 @@ private:
     QGridLayout* m_text_layout;
     enum {NUMBER = 3};
     QPushButton* m_buttons[NUMBER];
+
     QTextBrowser* m_text_browser;
 
-    QAction* m_action_content;
-    QAction* m_action_pointer;
-    QAction* m_action_find;
+    QTabWidget* m_tab_widget;
+    QWidget* m_tab_1;
+    QWidget* m_tab_2;
+    QWidget* m_tab_3;
+
+    QVBoxLayout* m_tab_1_layout;
+    QVBoxLayout* m_tab_2_layout;
+    QVBoxLayout* m_tab_3_layout;
+
     enum {CHILDS = 4};
     QTreeWidgetItem* m_tree_child[CHILDS];
     QTreeWidgetItem* m_tree_child_child[CHILDS];
     QTreeWidgetItem* m_tree_child_child_2[CHILDS];
 
-    QLabel* m_search_label = nullptr;
-    QPushButton* m_search_button = nullptr;
-    QLineEdit* m_search_edit = nullptr;
-    QListWidget* m_file_list = nullptr;
+    // QLabel* m_search_label = nullptr;
+    // QPushButton* m_search_button = nullptr;
+    // QLineEdit* m_search_edit = nullptr;
+    // QListWidget* m_file_list = nullptr;
 
-    QTreeWidget* m_tree_pointer = nullptr;
-    enum{POINTERS = 8};
-    QTreeWidgetItem* m_tree_child_pointer[POINTERS];
+    // QTreeWidget* m_tree_pointer = nullptr;
+    // enum{POINTERS = 8};
+    // QTreeWidgetItem* m_tree_child_pointer[POINTERS];
+
+    QLineEdit* m_template_edit = nullptr;
+    QLineEdit* m_character_edit = nullptr;
+    QListWidget* m_words_list = nullptr;
 
     QString m_search_text = "";
 };

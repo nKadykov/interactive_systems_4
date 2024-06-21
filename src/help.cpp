@@ -30,34 +30,55 @@ Help::Help(QWidget* parent) : QDialog(parent) {
 
     m_menu_box = new QGroupBox;
     m_menu_layout = new QGridLayout;
-    m_menu_bar = new QMenuBar;
 
-    m_menu_content = new QMenu("&Content", m_menu_bar);
-    m_menu_content->setMinimumSize(5, 5);
+    // m_menu_bar = new QMenuBar;
 
-    m_menu_pointer = new QMenu("&Pointer");
-    m_menu_pointer->setMinimumSize(5, 5);
+    // m_menu_content = new QMenu("&Content", m_menu_bar);
+    // m_menu_content->setMinimumSize(5, 5);
 
-    m_menu_find = new QMenu("&Find");
-    m_menu_find->setMinimumSize(5, 5);
+    // m_menu_pointer = new QMenu("&Template");
+    // m_menu_pointer->setMinimumSize(5, 5);
 
-    m_action_content = new QAction(tr("Content"));
-    m_action_pointer = new QAction(tr("Pointer"));
-    m_action_find = new QAction(tr("Find"));
+    // m_menu_find = new QMenu("&Character");
+    // m_menu_find->setMinimumSize(5, 5);
 
-    m_menu_content->addAction(m_action_content);
-    m_menu_pointer->addAction(m_action_pointer);
-    m_menu_find->addAction(m_action_find);
+    // m_action_content = new QAction(tr("Content"));
+    // m_action_template = new QAction(tr("Template"));
+    // m_action_character = new QAction(tr("Character"));
 
-    m_menu_bar->addMenu(m_menu_content);
-    m_menu_bar->addMenu(m_menu_pointer);
-    m_menu_bar->addMenu(m_menu_find);
+    // m_menu_content->addAction(m_action_content);
+    // m_menu_pointer->addAction(m_action_template);
+    // m_menu_find->addAction(m_action_character);
 
-    connect(m_action_content, &QAction::triggered, this, &Help::actionShowContent);
-    connect(m_action_pointer, &QAction::triggered, this, &Help::actionShowPointer);
-    connect(m_action_find, &QAction::triggered, this, &Help::actionShowFind);
+    // m_menu_bar->addMenu(m_menu_content);
+    // m_menu_bar->addMenu(m_menu_pointer);
+    // m_menu_bar->addMenu(m_menu_find);
 
-    m_menu_layout->addWidget(m_menu_bar);
+    // connect(m_action_template, &QAction::triggered, this, &Help::actionShowTemplate);
+    // connect(m_action_character, &QAction::triggered, this, &Help::actionShowCharacter);
+
+    // m_menu_layout->addWidget(m_menu_bar);
+
+    m_tab_widget = new QTabWidget;
+
+    m_tab_1 = new QWidget;
+    m_tab_2 = new QWidget;
+    m_tab_3 = new QWidget;
+
+    m_tab_1_layout = new QVBoxLayout(m_tab_1);
+    m_tab_2_layout = new QVBoxLayout(m_tab_2);
+    m_tab_3_layout = new QVBoxLayout(m_tab_3);
+
+    m_tab_widget->addTab(m_tab_1, "Content");
+    m_tab_widget->addTab(m_tab_2, "Template");
+    m_tab_widget->addTab(m_tab_3, "Character");
+
+    m_menu_layout->addWidget(m_tab_widget);
+    m_menu_box->setLayout(m_menu_layout);
+
+    m_text_box = new QGroupBox;
+    m_text_browser = new QTextBrowser(this);
+    m_text_browser->setMinimumSize(500, 500);
 
     m_tree_widget = new QTreeWidget;
     QTreeWidgetItem* tree_item_1 = new QTreeWidgetItem;
@@ -74,13 +95,21 @@ Help::Help(QWidget* parent) : QDialog(parent) {
         m_tree_child[i]->addChild(m_tree_child_child_2[i]);
     }
     m_tree_widget->addTopLevelItem(tree_item_1);
+    m_tab_1_layout->addWidget(m_tree_widget);
+    m_menu_box->setLayout(m_tab_1_layout);
 
-    m_menu_layout->addWidget(m_tree_widget);
-    m_menu_box->setLayout(m_menu_layout);
+    m_template_edit = new QLineEdit;
+    connect(m_template_edit, &QLineEdit::returnPressed, this, &Help::templateSearch);
+    m_tab_2_layout->addWidget(m_template_edit);
+    m_menu_box->setLayout(m_tab_2_layout);
 
-    m_text_box = new QGroupBox;
-    m_text_browser = new QTextBrowser(this);
-    m_text_browser->setMinimumSize(500, 500);
+    m_character_edit = new QLineEdit;
+    connect(m_character_edit, &QLineEdit::textChanged, this, &Help::characterSearch);
+    m_tab_3_layout->addWidget(m_character_edit);
+    m_words_list = new QListWidget;
+    connect(m_words_list, &QListWidget::itemClicked, this, &Help::highlightWords);
+    m_tab_3_layout->addWidget(m_words_list);
+    m_menu_box->setLayout(m_tab_3_layout);
 
     QFile file("html/begin_page.html");
     if (!file.open(QIODevice::ReadOnly))
@@ -88,7 +117,6 @@ Help::Help(QWidget* parent) : QDialog(parent) {
         qWarning("file not found");
     }
     m_text_browser->setHtml(file.readAll());
-
     connect(m_tree_widget, &QTreeWidget::itemClicked, this, &Help::setPage);
 
     m_text_layout = new QGridLayout;
@@ -104,45 +132,7 @@ Help::Help(QWidget* parent) : QDialog(parent) {
 }
 
 Help::~Help() {
-    delete m_tool_bar;
-    delete m_menu_box;
-    delete m_text_box;
-    delete m_menu_content;
-    delete m_menu_pointer;
-    delete m_menu_find;
-    delete m_menu_bar;
-    if(m_tree_widget)
-        delete m_tree_widget;
-    delete m_main_layout;
-    delete m_menu_layout;
-    delete m_text_layout;
-    enum {NUMBER = 3};
-    QPushButton* m_buttons[NUMBER];
-    for(int i = 0; i < NUMBER; ++i) {
-        delete m_buttons[i];
-    }
-    delete m_text_browser;
-    delete m_action_content;
-    delete m_action_pointer;
-    delete m_action_find;
-    enum {CHILDS = 4};
-    for(int i = 0; i < CHILDS; ++i ) {
-        delete m_tree_child[i];
-        delete m_tree_child_child[i];
-        delete m_tree_child_child_2[i];
-    }
-    if(m_search_label != nullptr)
-        delete m_search_label;
-    if(m_search_button != nullptr)
-        delete m_search_button;
-    if(m_search_edit != nullptr)
-        delete m_search_edit;
-    if(m_file_list != nullptr)
-        delete m_file_list;
-    if(m_tree_pointer != nullptr)
-        delete m_tree_pointer;
-    for(int i = 0; i < POINTERS; ++i)
-        delete m_tree_child_pointer[POINTERS];
+
 }
 
 void Help::showHelp() {
@@ -160,118 +150,6 @@ void Help::buttonBack() {
 void Help::buttonNetwork() {
     QString link = "file:html/begin_page.html";
     QDesktopServices::openUrl(QUrl(link));
-}
-
-void Help::actionShowContent() {
-    if(m_search_label != nullptr) {
-        delete m_search_label;
-        m_search_label = nullptr;
-    }
-    if(m_search_edit != nullptr) {
-        delete m_search_edit;
-        m_search_edit = nullptr;
-    }
-    if(m_search_button != nullptr) {
-        delete m_search_label;
-        m_search_label = nullptr;
-    }
-    if(m_file_list != nullptr) {
-        delete m_file_list;
-        m_file_list = nullptr;
-    }
-
-    if(m_tree_pointer != nullptr) {
-        delete m_tree_pointer;
-        m_tree_pointer = nullptr;
-    }
-
-    if(m_tree_widget == nullptr) {
-        m_tree_widget = new QTreeWidget;
-        QTreeWidgetItem* tree_item_1 = new QTreeWidgetItem;
-        tree_item_1->setText(0, "Лабораторные работы");
-        for(int i = 0; i < 4; ++i) {
-            m_tree_child[i] = new QTreeWidgetItem();
-            m_tree_child[i]->setText(0, QString::number(i+1));
-            tree_item_1->addChild(m_tree_child[i]);
-            m_tree_child_child[i] = new QTreeWidgetItem;
-            m_tree_child_child_2[i] = new QTreeWidgetItem;
-            m_tree_child_child[i]->setText(0, "Цель " + QString::number(i + 1));
-            m_tree_child[i]->addChild(m_tree_child_child[i]);
-            m_tree_child_child_2[i]->setText(0, "Задачи " + QString::number(i + 1));
-            m_tree_child[i]->addChild(m_tree_child_child_2[i]);
-        }
-        m_tree_widget->addTopLevelItem(tree_item_1);
-        m_menu_layout->addWidget(m_tree_widget);
-        connect(m_tree_widget, &QTreeWidget::itemClicked, this, &Help::setPage);
-    }
-}
-
-void Help::actionShowPointer() {
-
-    if(m_tree_widget) {
-        delete m_tree_widget;
-        m_tree_widget = nullptr;
-    }
-
-    if(m_search_label != nullptr) {
-        delete m_search_label;
-        m_search_label = nullptr;
-    }
-    if(m_search_edit != nullptr) {
-        delete m_search_edit;
-        m_search_edit = nullptr;
-    }
-    if(m_search_button != nullptr) {
-        delete m_search_label;
-        m_search_label = nullptr;
-    }
-    if(m_file_list != nullptr) {
-        delete m_file_list;
-        m_file_list = nullptr;
-    }
-
-    if(m_tree_pointer == nullptr) {
-        m_tree_pointer = new QTreeWidget;
-        for(int i = 0; i < 8; ++i) {
-            m_tree_child_pointer[i] = new QTreeWidgetItem();
-            if(i % 2 == 0)
-                m_tree_child_pointer[i]->setText(0, "Цель " + QString::number(i / 2 + 1));
-            if(i % 2 != 0)
-                m_tree_child_pointer[i]->setText(0, "Задачи " + QString::number(i / 2 + 1));
-            m_tree_pointer->addTopLevelItem(m_tree_child_pointer[i]);
-        }
-        m_menu_layout->addWidget(m_tree_pointer);
-        connect(m_tree_pointer, &QTreeWidget::itemClicked, this, &Help::setPage);
-    }
-}
-
-void Help::actionShowFind() {
-    if(m_tree_widget) {
-        delete m_tree_widget;
-        m_tree_widget = nullptr;
-    }
-
-    if(m_tree_pointer != nullptr) {
-        delete m_tree_pointer;
-        m_tree_pointer = nullptr;
-    }
-
-    if(m_search_label == nullptr)
-        m_search_label = new QLabel("Search text: ", this);
-    if(m_search_edit == nullptr)
-        m_search_edit = new QLineEdit(this);
-    if(m_search_button == nullptr)
-        m_search_button = new QPushButton("Search", this);
-    if(m_file_list == nullptr)
-        m_file_list = new QListWidget(this);
-
-    m_menu_layout->addWidget(m_search_label);
-    m_menu_layout->addWidget(m_search_edit);
-    m_menu_layout->addWidget(m_search_button);
-    m_menu_layout->addWidget(m_file_list);
-
-    connect(m_search_button, &QPushButton::clicked, this, &Help::performSearch);
-    connect(m_file_list, &QListWidget::itemClicked, this, &Help::onLinkClicked);
 }
 
 void Help::setPage(QTreeWidgetItem* item, int i) {
@@ -342,70 +220,102 @@ void Help::setPage(QTreeWidgetItem* item, int i) {
     }
 }
 
-void Help::performSearch() {
-    QString directory_path = "html";
-    m_search_text = m_search_edit->text();
-
-    if(m_search_text.isEmpty()) {
+void Help::templateSearch() {
+    QString word = m_template_edit->text();
+    if(word.isEmpty()) {
         return;
     }
+    QTextDocument* doc = m_text_browser->document();
+    QTextCursor cursor(doc);
 
-    m_file_list->clear();
+    QTextCharFormat default_format;
+    default_format.setBackground(Qt::white);
 
-    QDir directory(directory_path);
+    cursor.movePosition(QTextCursor::Start);
+    while (!cursor.isNull() && !cursor.atEnd()) {
+        cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor);
+        QTextCharFormat char_format = cursor.charFormat();
+        if(!char_format.isAnchor()) {
+            cursor.mergeCharFormat(default_format);
+        }
+    }
 
-    QStringList filters;
-    filters << "*.html";
-    QFileInfoList files = directory.entryInfoList(filters, QDir::Files);
+    m_text_browser->moveCursor(QTextCursor::Start);
+    QTextCharFormat format;
+    format.setBackground(Qt::yellow);
 
-    m_file_list->clear();
+    cursor = QTextCursor(doc);
+    while(!cursor.isNull() && !cursor.atEnd()) {
+        cursor = m_text_browser->document()->find(word, cursor);
+        if(!cursor.isNull()) {
+            cursor.mergeCharFormat(format);
+        }
+    }
+}
 
-    foreach(const QFileInfo &fileinfo, files) {
-        QFile file(fileinfo.filePath());
-        if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QTextStream in(&file);
-            QString file_content = in.readAll();
-            if(file_content.contains(m_search_text, Qt::CaseInsensitive)) {
-                QListWidgetItem* item = new QListWidgetItem(fileinfo.fileName(), m_file_list);
-                item->setData(Qt::UserRole, fileinfo.filePath());
+void Help::characterSearch() {
+    QString text = m_character_edit->text();
+    if(text.isEmpty()) {
+        return;
+    }
+    m_words_list->clear();
+    QTextDocument *doc = m_text_browser->document();
+    QTextCursor cursor(doc);
+    // QRegularExpression regex(text + "\\w*", QRegularExpression::CaseInsensitiveOption);
+
+
+
+    QSet<QString> unique_words;
+
+    while(!cursor.isNull() && !cursor.atEnd()) {
+        // cursor = doc->find(regex, cursor);
+        cursor = doc->find(text, cursor, QTextDocument::FindWholeWords | QTextDocument::FindCaseSensitively);
+        if(!cursor.isNull()) {
+            QString word = cursor.selectedText();
+            if(word.startsWith(text, Qt::CaseInsensitive) && !unique_words.contains(word)) {
+                unique_words.insert(word);
+                QListWidgetItem *item = new QListWidgetItem(word);
+                m_words_list->addItem(item);
             }
         }
     }
 }
 
-void Help::onLinkClicked(QListWidgetItem* item) {
-    QString file_path = item->data(Qt::UserRole).toString();
-    QString search_text = m_search_text;
-
-    QFile file(file_path);
-    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QMessageBox::warning(this, "File error", "Unable to open file");
-        return;
+void Help::keyPressEvent(QKeyEvent *event) {
+    if(event->key()) {
+        event->ignore();
     }
+}
 
-    QTextStream in(&file);
-    QString content = in.readAll();
+void Help::highlightWords(QListWidgetItem* item) {
+    QString word = item->text();
 
-    m_text_browser->toPlainText();
-    m_text_browser->setHtml(content);
-    for(int i = 0; i < 30; ++i) {
-        m_text_browser->append("\n");
-    }
-    m_text_browser->append(search_text);
+    QTextDocument* doc = m_text_browser->document();
+    QTextCursor cursor(doc);
 
-    QTextCursor cursor(m_text_browser->document());
-    QTextCharFormat format;
-    format.setBackground(Qt::yellow);
+    QTextCharFormat default_format;
+    default_format.setBackground(Qt::white);
 
-    cursor.beginEditBlock();
-
+    cursor.movePosition(QTextCursor::Start);
     while (!cursor.isNull() && !cursor.atEnd()) {
-        cursor = m_text_browser->document()->find(search_text, cursor);
-        if (!cursor.isNull()) {
-            cursor.mergeCharFormat(format);
+        cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor);
+        QTextCharFormat char_format = cursor.charFormat();
+        if(!char_format.isAnchor()) {
+            cursor.mergeCharFormat(default_format);
         }
     }
 
-    cursor.endEditBlock();
-    m_text_browser->moveCursor(QTextCursor::Start);
+    cursor = QTextCursor(doc);
+    // QRegularExpression regex("\\b" + word + "\\b");
+
+    QTextCharFormat format;
+    format.setBackground(Qt::yellow);
+
+    while(!cursor.isNull() && !cursor.atEnd()) {
+        // cursor = doc->find(regex, cursor);
+        cursor = doc->find(word, cursor, QTextDocument::FindWholeWords | QTextDocument::FindCaseSensitively);
+        if(!cursor.isNull()) {
+            cursor.mergeCharFormat(format);
+        }
+    }
 }
